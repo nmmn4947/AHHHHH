@@ -5,6 +5,7 @@ using UnityEngine;
 public class SoundSetting : MonoBehaviour
 {
     //ThreshHold
+    public static string selectedDevice;
     public static float normalLoud;
     public static float screamLoud;
     //Gains
@@ -14,7 +15,7 @@ public class SoundSetting : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log(normalLoud);
-        Debug.Log(screamLoud);
+        Debug.Log("NormLoud " + normalLoud);
+        Debug.Log("ScreamLoud " + screamLoud);
     }
 }

@@ -35,15 +35,18 @@ public class MicInput : MonoBehaviour
         {
             Loudness = currentLoud * MicGainsSlider.GainsValue;
         }
-        
+        Debug.Log(SoundSetting.selectedDevice);
         //Debug.Log("Loud : " + Loudness.ToString());
     }
 
     public void MicrophoneToAudioClip()
     {
-        string micName = Microphone.devices[0];
-        Debug.Log(micName);
-        microphoneClip = Microphone.Start(micName, true, 10, AudioSettings.outputSampleRate);
+        if (Microphone.devices.Length == 0)
+        {
+            Debug.Log("No Microphone in device");
+        }
+        Debug.Log(SoundSetting.selectedDevice);
+        microphoneClip = Microphone.Start(SoundSetting.selectedDevice, true, 10, AudioSettings.outputSampleRate);
     }
 
     public float GetLoudnessFromMic()
