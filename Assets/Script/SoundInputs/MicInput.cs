@@ -18,7 +18,7 @@ public class MicInput : MonoBehaviour
     {
         MicrophoneToAudioClip();
 
-/*        audioSource = GetComponent<AudioSource>();
+/*      audioSource = GetComponent<AudioSource>();
         audioSource.clip = microphoneClip;
         audioSource.Play();*/
     }
@@ -39,6 +39,7 @@ public class MicInput : MonoBehaviour
         //Debug.Log("Loud : " + Loudness.ToString());
     }
 
+    
     public void MicrophoneToAudioClip()
     {
         if (Microphone.devices.Length == 0)
@@ -48,6 +49,7 @@ public class MicInput : MonoBehaviour
         Debug.Log(SoundSetting.selectedDevice);
         microphoneClip = Microphone.Start(SoundSetting.selectedDevice, true, 10, AudioSettings.outputSampleRate);
     }
+
 
     public float GetLoudnessFromMic()
     {

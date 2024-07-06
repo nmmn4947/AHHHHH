@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class LoudThresh : SoundSetting
 {
     public static bool isTalking;
+    public static bool isScreaming;
     public bool isNormal;
     private Slider slider;
 
@@ -18,13 +19,21 @@ public class LoudThresh : SoundSetting
 
     private void Update()
     {
-        if (MicInput.Loudness > LoudThresh.normalLoud)
+        if (MicInput.Loudness > LoudThresh.screamLoud)
+        {
+            isScreaming = true;
+            
+
+        }
+        else if (MicInput.Loudness > LoudThresh.normalLoud)
         {
             isTalking = true;
+            isScreaming = false;
         }
         else
         {
             isTalking = false;
+            isScreaming = false;
         }
     }
 

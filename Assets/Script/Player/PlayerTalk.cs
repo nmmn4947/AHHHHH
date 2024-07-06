@@ -14,12 +14,18 @@ public class PlayerTalk : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (LoudThresh.isTalking)
+        if (LoudThresh.isScreaming)
         {
+            animator.SetBool("IsScream", true);
+        }
+        else if (LoudThresh.isTalking)
+        {
+            animator.SetBool("IsScream", false);
             animator.SetBool("IsTalk", true);
         }
         else
         {
+            animator.SetBool("IsScream", false);
             animator.SetBool("IsTalk", false);
         }
     }
