@@ -1,29 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class MicGain : SoundSetting
 {
-    private Slider slider;
+    private TMP_InputField input;
 
     private void Start()
     {
-        slider = GetComponent<Slider>();
-        slider.value = 0.05f;
+        input = GetComponent<TMP_InputField>();
+        input.text = "1.0";
     }
 
     private void Update()
     {
-        if(slider.value < 0.01f)
+        if (float.Parse(input.text) < 1)
         {
-            slider.value = 0.01f;
+            GainsValue = 1.0f;
         }
-    }
-
-    public void SetGains()
-    {
-        GainsValue = slider.value * 100;
+        GainsValue = float.Parse(input.text);
+        Debug.Log("Gains " + GainsValue);
     }
 }
