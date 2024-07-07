@@ -6,8 +6,8 @@ public class SoundSetting : MonoBehaviour
 {
     //ThreshHold
     public static string selectedDevice;
-    public static float normalLoud;
-    public static float screamLoud;
+    public static float normalLoud = 0.1f;
+    public static float screamLoud = 0.3f;
     //Gains
     public static float GainsValue;
     //CutBgNoise

@@ -13,8 +13,6 @@ public class LoudThresh : SoundSetting
     private void Start()
     {
         slider = GetComponent<Slider>();
-        normalLoud = 0.0f;
-        screamLoud = 0.0f;
     }
 
     private void Update()

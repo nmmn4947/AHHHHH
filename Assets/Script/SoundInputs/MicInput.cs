@@ -33,7 +33,7 @@ public class MicInput : MonoBehaviour
         }
         else
         {
-            Loudness = currentLoud * MicGainsSlider.GainsValue;
+            Loudness = currentLoud * MicGain.GainsValue;
         }
         Debug.Log(SoundSetting.selectedDevice);
         //Debug.Log("Loud : " + Loudness.ToString());

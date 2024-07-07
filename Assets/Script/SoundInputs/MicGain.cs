@@ -4,14 +4,14 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MicGainsSlider : SoundSetting
+public class MicGain : SoundSetting
 {
     private Slider slider;
 
     private void Start()
     {
         slider = GetComponent<Slider>();
-        slider.value = 0.01f;
+        slider.value = 0.05f;
     }
 
     private void Update()
