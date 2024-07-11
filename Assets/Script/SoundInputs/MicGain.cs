@@ -12,7 +12,7 @@ public class MicGain : SoundSetting
     private void Start()
     {
         input = GetComponent<TMP_InputField>();
-        input.text = "1.0";
+        input.text = GainsValue.ToString();
     }
 
     private void Update()
