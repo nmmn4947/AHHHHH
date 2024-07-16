@@ -29,8 +29,7 @@ public class LoudThresh : SoundSetting
         if (MicInput.Loudness > LoudThresh.screamLoud)
         {
             isScreaming = true;
-            
-
+            // if scream then talk is also available
         }
         else if (MicInput.Loudness > LoudThresh.normalLoud)
         {

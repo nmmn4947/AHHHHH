@@ -30,7 +30,7 @@ public class dummyHP : MonoBehaviour
         if (HP <= 0){
             isDying();
         }
-        if (isHit = true){
+        if (isHit == true){
             SetHP(1);
         }
     }

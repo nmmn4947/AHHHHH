@@ -2157,6 +2157,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5705e05f72d57e4b9bccdb0125ed182, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  chargePerScream: 0
+  chargePerTalk: 0
+  MaxCharge: 0
+  damagePerCharge: 0
+  scalePerCharge: 0
+  hitStopTime: 0
+  hitRangePerCharge: 0
 --- !u!1 &732464793
 GameObject:
   m_ObjectHideFlags: 0
