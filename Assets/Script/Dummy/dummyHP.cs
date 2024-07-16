@@ -13,7 +13,10 @@ public class dummyHP : MonoBehaviour
         isHit = false;
 
     }
-    public void isDying();
+    public void isDying()
+    {
+
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -25,10 +28,10 @@ public class dummyHP : MonoBehaviour
     void Update()
     {
         if (HP <= 0){
-            isDead();
+            isDying();
         }
         if (isHit = true){
-            SetHP();
+            SetHP(1);
         }
     }
 }
