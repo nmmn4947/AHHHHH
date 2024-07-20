@@ -5,6 +5,8 @@ using UnityEngine;
 public class SoundSetting : MonoBehaviour
 {
     //ThreshHold
+    public static bool isTalking;
+    public static bool isScreaming;
     public static string selectedDevice;
     public static float normalLoud = 0.1f;
     public static float screamLoud = 0.4f;

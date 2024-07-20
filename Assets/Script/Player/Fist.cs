@@ -4,20 +4,24 @@ using UnityEngine;
 
 public class Fist : MonoBehaviour
 {
-    private int SoundCharge = 0;
-    [SerializeField] private int chargePerScream;
-    [SerializeField] private int chargePerTalk;
-    [SerializeField] private int MaxCharge;
-
+    //charge
+    [SerializeField] private float chargeTime;
+    private float chargeTimeKeep;
+    // damage
     [SerializeField] private int damagePerCharge;
-    [SerializeField] private float scalePerCharge;
+    [SerializeField] private float MaxScaleCharge;
+    // hit stop
     [SerializeField] private float hitStopTime;
     [SerializeField] private float hitRangePerCharge;
+    //shaker
+    Vector2 KeepFistPos;
+
+    public GameObject skin;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        KeepFistPos = skin.transform.localPosition;
     }
 
     // Update is called once per frame
@@ -28,23 +32,22 @@ public class Fist : MonoBehaviour
         {
             Debug.Log("Charge");
             
-            if (SoundCharge <= MaxCharge)
+            if (SoundSetting.isTalking)
             {
-                if (LoudThresh.isTalking)
+                /*SoundCharge += chargePerTalk;
+                Debug.Log("addingTal" + SoundCharge);*/
+                if (chargeTime > chargeTimeKeep)
                 {
-                    SoundCharge += chargePerTalk;
-                    Debug.Log("addingTal" + SoundCharge);
-                }
-                else
-                {
-
+                    chargeTimeKeep += Time.deltaTime;
                 }
             }
             else
             {
-                //max
-            }
 
+            }
+            float min = Mathf.Lerp(-0.01f, -0.1f, chargeTimeKeep / chargeTime);
+            float max = Mathf.Lerp(0.01f, 0.1f, chargeTimeKeep / chargeTime);
+            skin.transform.localPosition = new Vector2(KeepFistPos.x + Random.Range(min, max), KeepFistPos.y + Random.Range(min, max));
             // moreCharge = More damage, more Scale, more hitStopTime, more Range
             // until Max
         }
@@ -52,11 +55,21 @@ public class Fist : MonoBehaviour
         {
             Debug.Log("punch!");
             //punch
-            SoundCharge = 0;
+            
         }
         else
         {
             Debug.Log("noting");
         }
+
+
+        Vector3 ones = new Vector3(1.0f, 1.0f, 1.0f) * Mathf.Lerp(1.0f, MaxScaleCharge, chargeTimeKeep / chargeTime);
+        Debug.Log(ones);
+        transform.localScale = ones;
+
+
+
+        // do the Shake
+
     }
 }
