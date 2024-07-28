@@ -2157,12 +2157,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5705e05f72d57e4b9bccdb0125ed182, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currPhase: 0
+  skin: {fileID: 1615019574}
   chargeTime: 6
-  damagePerCharge: 0
   MaxScaleCharge: 3
+  backReleaseTime: 1
+  setBackRate: 0.5
+  forwardRate: 0.2
+  forwardReleaseTime: 0.07
+  damagePerCharge: 0
   hitStopTime: 0
   hitRangePerCharge: 0
-  skin: {fileID: 1615019574}
 --- !u!1 &732464793
 GameObject:
   m_ObjectHideFlags: 0
