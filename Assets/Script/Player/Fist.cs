@@ -9,7 +9,8 @@ public class Fist : MonoBehaviour
         charging,
         releasing,
         hitting,
-        returning
+        returning,
+        reset
     }
     [Header("General")]
     public Phases currPhase;
@@ -34,11 +35,19 @@ public class Fist : MonoBehaviour
     Vector2 KeepFistPos;
 
     [Header("HittingPhase")]
+    private bool isHitEnemy;
+
+    [SerializeField] private float hitWindowTime;
+    private float hitTimeKeep;
     // damage
     [SerializeField] private int damagePerCharge;
     // hit stop
     [SerializeField] private float hitStopTime;
     [SerializeField] private float hitRangePerCharge;
+
+    [Header("ReturnPhase")]
+    [SerializeField] private float returnTime;
+    private float returnTimeKeep;
 
     // Start is called before the first frame update
     void Start()
@@ -95,6 +104,16 @@ public class Fist : MonoBehaviour
                 releaseTimeScaling = Mathf.Lerp(0.0f, backReleaseTime, chargeTimeKeep / chargeTime);
                 if (transform.localScale.x < 1.2f)
                 {
+                    FReleaseTimeKeep += Time.deltaTime;
+                    if (FReleaseTimeKeep < forwardReleaseTime)
+                    {
+                        skin.transform.localPosition = new Vector2(Mathf.Lerp(KeepFistSkinPos.x, KeepFistSkinPos.x + forwardRate, FReleaseTimeKeep / forwardReleaseTime), KeepFistSkinPos.y);
+                    }
+                    else
+                    {
+                        currPhase = Phases.hitting;
+                        break;
+                    }
                     currPhase = Phases.hitting; 
                     break;
                 }
@@ -103,7 +122,6 @@ public class Fist : MonoBehaviour
                     releaseTimeKeep += Time.deltaTime;
                     if (releaseTimeKeep < releaseTimeScaling)
                     {
-                        Debug.Log("Blyat");
                         BkeepX = KeepFistSkinPos.x - Mathf.Lerp(0.0f, setBackRate, releaseTimeKeep / releaseTimeScaling);
                         skin.transform.localPosition = new Vector2(BkeepX, KeepFistSkinPos.y);
                     }
@@ -111,7 +129,6 @@ public class Fist : MonoBehaviour
                     {
                         FReleaseTimeKeep += Time.deltaTime;
                         if (FReleaseTimeKeep < forwardReleaseTime) {
-                            Debug.Log("Zuka");
                             skin.transform.localPosition = new Vector2(Mathf.Lerp(BkeepX, KeepFistSkinPos.x + forwardRate, FReleaseTimeKeep / forwardReleaseTime), KeepFistSkinPos.y);
                             
                         }
@@ -123,23 +140,100 @@ public class Fist : MonoBehaviour
                     }
 
                 }
-                break; 
+                break;
             case Phases.hitting:
                 //if hit
+                Debug.Log("Hitting");
+                if (!isHitEnemy) { 
+                    hitTimeKeep += Time.deltaTime;
+                    if (hitTimeKeep < hitWindowTime)
+                    {
 
-
-                chargeTimeKeep = 0;
-                //currPhase = Phases.returning;
+                    }
+                    else
+                    {
+                        currPhase = Phases.returning;
+                        break;
+                    }
+                }
+                else
+                {
+                    Debug.Log("Hit");
+                    StartCoroutine(hitStop(hitStopTime));
+                    currPhase = Phases.returning;
+                    break;
+                }
                 break;
             case Phases.returning:
+                returnTimeKeep += Time.deltaTime;
+                if (returnTimeKeep < returnTime)
+                {
+                    transform.localScale = new Vector3(Mathf.Lerp(transform.localScale.x, 1.0f, returnTimeKeep / returnTime), Mathf.Lerp(transform.localScale.y, 1.0f, returnTimeKeep / returnTime), 1.0f);
+                    skin.transform.localPosition = new Vector2(Mathf.Lerp(skin.transform.localPosition.x, KeepFistSkinPos.x, returnTimeKeep / returnTime),
+                                                               Mathf.Lerp(skin.transform.localPosition.y, KeepFistSkinPos.y, returnTimeKeep / returnTime));
+                }
+                else
+                {
+                    currPhase = Phases.reset;
+                    break;
+                }
+                break;
+            case Phases.reset:
+                chargeTimeKeep = 0.0f;
+                releaseTimeKeep = 0.0f;
+                FReleaseTimeKeep = 0.0f;
+                returnTimeKeep = 0.0f;
                 currPhase = Phases.charging;
                 break;
         }
+    }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (currPhase == Phases.hitting)
+        {
+            Debug.Log("YES");
+            if (collision.gameObject.tag == "Enemy")
+            {
+                Debug.Log("Sir");
+                isHitEnemy = true;
+            }
+            else
+            {
+                Debug.Log("NOPE");
+            }
+        }
+        else
+        {
+            Debug.Log("No");
+        }
+    }
 
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (currPhase == Phases.hitting)
+        {
+            Debug.Log("YES");
+            if (collision.gameObject.tag == "Enemy")
+            {
+                Debug.Log("Sir");
+                isHitEnemy = true;
+            }
+            else
+            {
+                Debug.Log("NOPE");
+            }
+        }
+        else
+        {
+            Debug.Log("No");
+        }
+    }
 
-
-        // do the Shake
-
+    IEnumerator hitStop(float duration)
+    {
+        Time.timeScale = 0.0f;
+        yield return new WaitForSecondsRealtime(duration);
+        Time.timeScale = 1.0f;
     }
 }
