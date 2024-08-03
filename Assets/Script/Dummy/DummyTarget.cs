@@ -1,16 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Unity.Collections.AllocatorManager;
 
 public class DummyTarget : MonoBehaviour
 {
     [SerializeField] private int HP;
-    private bool isHit;
     private bool isDead;
+    Rigidbody2D rb;
 
-    public void SetHP(int damage)
+    private void Start()
     {
-        HP -= damage;
+        rb = GetComponent<Rigidbody2D>();
+    }
+
+    private void Update()
+    {
+
+    }
+
+    private void SetHP(int num)
+    {
+        HP = num;
     }
 
     public int getHp()
@@ -18,13 +29,19 @@ public class DummyTarget : MonoBehaviour
         return HP;
     }
 
-    private void Start()
+    public void IsHitting(Vector2 knock) 
     {
-        
+        rb.AddForce(knock);
     }
 
-    private void Update()
+/*    private void KnockBack(Vector2 dir, Vector2 power)
     {
-        
+        rb.AddForce(dir * power);
+    }*/
+
+    private void TakeDamage(int damage)
+    {
+        HP -= damage;
     }
+
 }

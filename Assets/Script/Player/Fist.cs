@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.UI;
 using UnityEngine;
+using static Unity.Collections.AllocatorManager;
 
 public class Fist : MonoBehaviour
 {
@@ -15,6 +17,7 @@ public class Fist : MonoBehaviour
     [Header("General")]
     public Phases currPhase;
     public GameObject skin;
+    SpriteRenderer spriteRenderer;
 
     [Header("ChargePhase")]
     [SerializeField] private float chargeTime;
@@ -44,6 +47,7 @@ public class Fist : MonoBehaviour
     // hit stop
     [SerializeField] private float hitStopTime;
     [SerializeField] private float hitRangePerCharge;
+    [SerializeField] private float maxKnockPower;
 
     [Header("ReturnPhase")]
     [SerializeField] private float returnTime;
@@ -54,6 +58,7 @@ public class Fist : MonoBehaviour
     {
         KeepFistSkinPos = skin.transform.localPosition;
         KeepFistPos = transform.localPosition;
+        spriteRenderer = skin.GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
@@ -97,7 +102,6 @@ public class Fist : MonoBehaviour
                 }
 
                 Vector3 ones = new Vector3(1.0f, 1.0f, 1.0f) * Mathf.Lerp(1.0f, MaxScaleCharge, chargeTimeKeep / chargeTime);
-                Debug.Log(ones);
                 transform.localScale = ones;
                 break;
             case Phases.releasing:
@@ -148,16 +152,18 @@ public class Fist : MonoBehaviour
                     hitTimeKeep += Time.deltaTime;
                     if (hitTimeKeep < hitWindowTime)
                     {
-
+                        spriteRenderer.color = Color.black;
                     }
                     else
                     {
+                        spriteRenderer.color = Color.white;
                         currPhase = Phases.returning;
                         break;
                     }
                 }
                 else
                 {
+                    spriteRenderer.color = Color.red;
                     Debug.Log("Hit");
                     StartCoroutine(hitStop(hitStopTime));
                     currPhase = Phases.returning;
@@ -182,6 +188,7 @@ public class Fist : MonoBehaviour
                 chargeTimeKeep = 0.0f;
                 releaseTimeKeep = 0.0f;
                 FReleaseTimeKeep = 0.0f;
+                hitTimeKeep = 0.0f;
                 returnTimeKeep = 0.0f;
                 currPhase = Phases.charging;
                 break;
@@ -190,50 +197,61 @@ public class Fist : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (currPhase == Phases.hitting)
+        Debug.Log("YES");
+        if (collision.gameObject.tag == "Enemy")
         {
-            Debug.Log("YES");
-            if (collision.gameObject.tag == "Enemy")
+            DummyTarget target = collision.gameObject.GetComponent<DummyTarget>();
+            Debug.Log("Sir");
+            Vector2 diff = target.gameObject.transform.position - new Vector3(KeepFistPos.x, KeepFistPos.y, 0);
+            float dist = Mathf.Sqrt(diff.x * diff.x + diff.y * diff.y);
+            if (dist > 0.0f)
             {
-                Debug.Log("Sir");
+                diff /= dist;
+            }
+            Vector2 force = diff * maxKnockPower;
+            if (currPhase == Phases.hitting)
+            {
+                target.IsHitting(force);
                 isHitEnemy = true;
-            }
-            else
+            }else
             {
-                Debug.Log("NOPE");
+                //target.IsHitting(diff * 2000.0f);
             }
-        }
-        else
-        {
-            Debug.Log("No");
         }
     }
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (currPhase == Phases.hitting)
+        Debug.Log("YES");
+        if (collision.gameObject.tag == "Enemy")
         {
-            Debug.Log("YES");
-            if (collision.gameObject.tag == "Enemy")
+            DummyTarget target = collision.gameObject.GetComponent<DummyTarget>();
+            Debug.Log("Sir");
+            Vector2 diff = target.gameObject.transform.position - new Vector3(KeepFistPos.x, KeepFistPos.y, 0);
+            float dist = Mathf.Sqrt(diff.x * diff.x + diff.y * diff.y);
+            if (dist > 0.0f)
             {
-                Debug.Log("Sir");
+                diff /= dist;
+            }
+            Vector2 force = diff * maxKnockPower;
+            if (currPhase == Phases.hitting)
+            {
+                target.IsHitting(force);
                 isHitEnemy = true;
             }
             else
             {
-                Debug.Log("NOPE");
+                //target.IsHitting(diff * 2000.0f);
             }
-        }
-        else
-        {
-            Debug.Log("No");
         }
     }
 
     IEnumerator hitStop(float duration)
     {
         Time.timeScale = 0.0f;
+        Debug.Log("stopping");
         yield return new WaitForSecondsRealtime(duration);
+        spriteRenderer.color = Color.white;
         Time.timeScale = 1.0f;
     }
 }

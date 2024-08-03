@@ -2169,6 +2169,7 @@ MonoBehaviour:
   damagePerCharge: 0
   hitStopTime: 0.4
   hitRangePerCharge: 0
+  maxKnockPower: 2000
   returnTime: 2
 --- !u!1 &732464793
 GameObject:
@@ -6312,8 +6313,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HP: -1
-  isHit: 0
-  isDead: 0
 --- !u!1 &1963358196
 GameObject:
   m_ObjectHideFlags: 0
