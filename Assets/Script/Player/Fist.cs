@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.UI;
 using UnityEngine;
+using UnityEngine.UIElements;
+using Cinemachine;
 using static Unity.Collections.AllocatorManager;
 
 public class Fist : MonoBehaviour
@@ -36,9 +38,12 @@ public class Fist : MonoBehaviour
     private float FReleaseTimeKeep;
     private float BkeepX;
     Vector2 KeepFistPos;
+    
 
     [Header("HittingPhase")]
     private bool isHitEnemy;
+    float offsetC;
+    BoxCollider2D boxC;
 
     [SerializeField] private float hitWindowTime;
     private float hitTimeKeep;
@@ -46,8 +51,10 @@ public class Fist : MonoBehaviour
     [SerializeField] private int damagePerCharge;
     // hit stop
     [SerializeField] private float hitStopTime;
-    [SerializeField] private float hitRangePerCharge;
+    [SerializeField] private float maxShakeIntensity;
+    private float shakeIntensity;
     [SerializeField] private float maxKnockPower;
+    CinemachineBrain camBrain;
 
     [Header("ReturnPhase")]
     [SerializeField] private float returnTime;
@@ -59,6 +66,9 @@ public class Fist : MonoBehaviour
         KeepFistSkinPos = skin.transform.localPosition;
         KeepFistPos = transform.localPosition;
         spriteRenderer = skin.GetComponent<SpriteRenderer>();
+        boxC = GetComponent<BoxCollider2D>();
+        camBrain = FindAnyObjectByType<CinemachineBrain>();
+        camBrain.m_UpdateMethod = CinemachineBrain.UpdateMethod.FixedUpdate;
     }
 
     // Update is called once per frame
@@ -86,19 +96,27 @@ public class Fist : MonoBehaviour
                     float min = Mathf.Lerp(-0.01f, -0.1f, chargeTimeKeep / chargeTime);
                     float max = Mathf.Lerp(0.01f, 0.1f, chargeTimeKeep / chargeTime);
                     skin.transform.localPosition = new Vector2(KeepFistSkinPos.x + Random.Range(min, max), KeepFistSkinPos.y + Random.Range(min, max));
-
-
+                    if (chargeTimeKeep > chargeTime)
+                    {
+                        CamManager.Instance.SetShakeIntensity(0.0f);
+                    }
+                    else
+                    {
+                        CamManager.Instance.SetShakeIntensity(Mathf.Lerp(0.0f, 0.75f, chargeTimeKeep / chargeTime));
+                    }
                     // moreCharge = More damage, more Scale, more hitStopTime, more Range
                     // until Max
+                    shakeIntensity = Mathf.Lerp(0.0f,maxShakeIntensity, chargeTimeKeep / chargeTime);
                 }
                 else if (Input.GetMouseButtonUp(0))
                 {
+                    CamManager.Instance.SetShakeIntensity(0.0f);
                     currPhase = Phases.releasing;
                     break;
                 }
                 else
                 {
-                    Debug.Log("noting");
+
                 }
 
                 Vector3 ones = new Vector3(1.0f, 1.0f, 1.0f) * Mathf.Lerp(1.0f, MaxScaleCharge, chargeTimeKeep / chargeTime);
@@ -134,10 +152,11 @@ public class Fist : MonoBehaviour
                         FReleaseTimeKeep += Time.deltaTime;
                         if (FReleaseTimeKeep < forwardReleaseTime) {
                             skin.transform.localPosition = new Vector2(Mathf.Lerp(BkeepX, KeepFistSkinPos.x + forwardRate, FReleaseTimeKeep / forwardReleaseTime), KeepFistSkinPos.y);
-                            
+                            offsetC = Mathf.Lerp(0 ,forwardRate, FReleaseTimeKeep / forwardReleaseTime);
                         }
                         else
                         {
+                            camBrain.m_UpdateMethod = CinemachineBrain.UpdateMethod.LateUpdate;
                             currPhase = Phases.hitting;
                             break;
                         }
@@ -147,7 +166,7 @@ public class Fist : MonoBehaviour
                 break;
             case Phases.hitting:
                 //if hit
-                Debug.Log("Hitting");
+                boxC.offset = new Vector2(0.6f + offsetC, boxC.offset.y);
                 if (!isHitEnemy) { 
                     hitTimeKeep += Time.deltaTime;
                     if (hitTimeKeep < hitWindowTime)
@@ -164,7 +183,6 @@ public class Fist : MonoBehaviour
                 else
                 {
                     spriteRenderer.color = Color.red;
-                    Debug.Log("Hit");
                     StartCoroutine(hitStop(hitStopTime));
                     currPhase = Phases.returning;
                     break;
@@ -186,9 +204,16 @@ public class Fist : MonoBehaviour
                 break;
             case Phases.reset:
                 chargeTimeKeep = 0.0f;
+                shakeIntensity = 0.0f;
+                //
                 releaseTimeKeep = 0.0f;
                 FReleaseTimeKeep = 0.0f;
+                //
                 hitTimeKeep = 0.0f;
+                boxC.offset = new Vector2(0.6f, boxC.offset.y);
+                offsetC = 0.0f;
+                camBrain.m_UpdateMethod = CinemachineBrain.UpdateMethod.FixedUpdate;
+                //
                 returnTimeKeep = 0.0f;
                 currPhase = Phases.charging;
                 break;
@@ -197,11 +222,9 @@ public class Fist : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("YES");
         if (collision.gameObject.tag == "Enemy")
         {
             DummyTarget target = collision.gameObject.GetComponent<DummyTarget>();
-            Debug.Log("Sir");
             Vector2 diff = target.gameObject.transform.position - new Vector3(KeepFistPos.x, KeepFistPos.y, 0);
             float dist = Mathf.Sqrt(diff.x * diff.x + diff.y * diff.y);
             if (dist > 0.0f)
@@ -222,12 +245,11 @@ public class Fist : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        Debug.Log("YES");
         if (collision.gameObject.tag == "Enemy")
         {
             DummyTarget target = collision.gameObject.GetComponent<DummyTarget>();
-            Debug.Log("Sir");
-            Vector2 diff = target.gameObject.transform.position - new Vector3(KeepFistPos.x, KeepFistPos.y, 0);
+            
+            Vector2 diff = target.gameObject.transform.position - new Vector3(KeepFistPos.x, KeepFistPos.y - 3, 0);
             float dist = Mathf.Sqrt(diff.x * diff.x + diff.y * diff.y);
             if (dist > 0.0f)
             {
@@ -249,8 +271,10 @@ public class Fist : MonoBehaviour
     IEnumerator hitStop(float duration)
     {
         Time.timeScale = 0.0f;
-        Debug.Log("stopping");
+        Debug.Log("Shake intens = " + shakeIntensity.ToString());
+        CamManager.Instance.SetShakeIntensity(shakeIntensity);
         yield return new WaitForSecondsRealtime(duration);
+        CamManager.Instance.SetShakeIntensity(0.0f);
         spriteRenderer.color = Color.white;
         Time.timeScale = 1.0f;
     }
