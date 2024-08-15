@@ -44,8 +44,12 @@ public class DummyTarget : MonoBehaviour
         rb.AddForce(knock);
     }*/
 
-    private void TakeDamage(int damage)
+    public void TakeDamage(int damage)
     {
+        if (HP == 0)
+        {
+            //died
+        }
         HP -= damage;
     }
 

@@ -74,6 +74,11 @@ public class Fist : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+
+            chargeTimeKeep = chargeTime;
+        }
         switch (currPhase) {
             case Phases.charging:
                 if (Input.GetMouseButton(0))
@@ -87,6 +92,10 @@ public class Fist : MonoBehaviour
                         if (chargeTime > chargeTimeKeep)
                         {
                             chargeTimeKeep += Time.deltaTime;
+                        }
+                        else
+                        {
+                            spriteRenderer.color = Color.blue;
                         }
                     }
                     else
@@ -220,6 +229,8 @@ public class Fist : MonoBehaviour
         }
     }
 
+    //actually no need
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Enemy")
@@ -236,9 +247,6 @@ public class Fist : MonoBehaviour
             {
                 target.IsHitting(force);
                 isHitEnemy = true;
-            }else
-            {
-                //target.IsHitting(diff * 2000.0f);
             }
         }
     }
@@ -259,11 +267,8 @@ public class Fist : MonoBehaviour
             if (currPhase == Phases.hitting)
             {
                 target.IsHitting(force);
+                target.TakeDamage(1);
                 isHitEnemy = true;
-            }
-            else
-            {
-                //target.IsHitting(diff * 2000.0f);
             }
         }
     }
@@ -278,4 +283,6 @@ public class Fist : MonoBehaviour
         spriteRenderer.color = Color.white;
         Time.timeScale = 1.0f;
     }
+
+
 }
