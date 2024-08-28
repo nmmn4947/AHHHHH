@@ -10,11 +10,18 @@ public class Fist : MonoBehaviour
 {
     
     public enum Phases{
+        idle,
+        //leftclick
         charging,
         releasing,
         hitting,
         returning,
-        reset
+        resetLeft,
+        //rightclick
+        reach,
+        grab,
+        eat,
+        resetRight
     }
     [Header("General")]
     public Phases currPhase;
@@ -76,10 +83,21 @@ public class Fist : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E))
         {
-
             chargeTimeKeep = chargeTime;
         }
         switch (currPhase) {
+            case Phases.idle:
+                if (Input.GetMouseButtonDown(0))
+                {
+                    currPhase = Phases.charging;
+                }else if (Input.GetMouseButtonDown(1))
+                {
+                    //currPhase = Phases.charging;
+                }
+                break;
+            // -----------
+            //Left CLICK
+            // -----------
             case Phases.charging:
                 if (Input.GetMouseButton(0))
                 {
@@ -207,11 +225,11 @@ public class Fist : MonoBehaviour
                 }
                 else
                 {
-                    currPhase = Phases.reset;
+                    currPhase = Phases.resetLeft;
                     break;
                 }
                 break;
-            case Phases.reset:
+            case Phases.resetLeft:
                 chargeTimeKeep = 0.0f;
                 shakeIntensity = 0.0f;
                 //
@@ -224,8 +242,14 @@ public class Fist : MonoBehaviour
                 camBrain.m_UpdateMethod = CinemachineBrain.UpdateMethod.FixedUpdate;
                 //
                 returnTimeKeep = 0.0f;
-                currPhase = Phases.charging;
+                currPhase = Phases.idle;
                 break;
+            // -----------
+            //RIGHT CLICK
+            // -----------
+/*            case Phases.reach:
+                currPhase = Phases.idle;
+                break;*/
         }
     }
 
