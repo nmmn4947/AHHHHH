@@ -15,6 +15,7 @@ public class PlayerMove : MonoBehaviour
 
     void Update()
     {
+        /*
         horizontalMove = Input.GetAxisRaw("Horizontal") * runSpeed;
         if(Input.GetAxisRaw("Horizontal") == 0f)
         {
@@ -30,6 +31,7 @@ public class PlayerMove : MonoBehaviour
             Debug.Log("Among");
             jump = true;
         }
+        */
     }
 
     private void FixedUpdate()
