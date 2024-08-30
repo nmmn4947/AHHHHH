@@ -253,7 +253,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &534386444
 Transform:
   m_ObjectHideFlags: 0
@@ -417,7 +417,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &725875180
 Transform:
   m_ObjectHideFlags: 0
@@ -536,7 +536,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1083324490
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -648,6 +648,7 @@ GameObject:
   - component: {fileID: 1199189218}
   - component: {fileID: 1199189217}
   - component: {fileID: 1199189216}
+  - component: {fileID: 1199189219}
   m_Layer: 0
   m_Name: Dummy
   m_TagString: Untagged
@@ -744,6 +745,28 @@ Transform:
   - {fileID: 72832274}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1199189219
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1199189215}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c8ccd0897673dd4cb8241e7f5dab0eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyType: 0
+  enemyState: 0
+  speed: 0
+  attackRange: 0
+  detectRange: 0
+  HP: 0
+  ATK: 0
+  maxHP: 10
+  enemyRD: {fileID: 1199189216}
+  player: {fileID: 1988932679}
 --- !u!1 &1272295021
 GameObject:
   m_ObjectHideFlags: 0
@@ -759,7 +782,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1272295022
 Transform:
   m_ObjectHideFlags: 0
@@ -978,7 +1001,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1988932679}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 876b5b0c31e654e4ab35366d7d8590cf, type: 3}
   m_Name: 
@@ -1006,7 +1029,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1988932679}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: eb527a2cedce0e644b6e33e2632d448d, type: 3}
   m_Name: 
@@ -1124,7 +1147,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2051196571
 Transform:
   m_ObjectHideFlags: 0
@@ -1198,6 +1221,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5705e05f72d57e4b9bccdb0125ed182, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currPhase: 0
+  skin: {fileID: 0}
+  chargeTime: 0
+  MaxScaleCharge: 0
+  backReleaseTime: 0
+  setBackRate: 0
+  forwardRate: 0
+  forwardReleaseTime: 0
+  hitWindowTime: 0
+  damagePerCharge: 0
+  hitStopTime: 0
+  maxShakeIntensity: 0
+  maxKnockPower: 0
+  returnTime: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

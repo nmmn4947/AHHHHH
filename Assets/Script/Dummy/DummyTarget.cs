@@ -48,6 +48,7 @@ public class DummyTarget : MonoBehaviour
     {
         if (HP == 0)
         {
+            return;
             //died
         }
         HP -= damage;
