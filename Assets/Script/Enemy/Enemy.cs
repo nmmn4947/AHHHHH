@@ -101,17 +101,19 @@ public class Enemy : MonoBehaviour
     {
         Normal,
         Flying,
-        Bomb
+        Bite
     }
 
     public enum EnemyState
     {
         Idle,
         Detected,
+        Charging,
         MoveToPosition,
         MoveToPlayer,
         PlayerHit, // Mean player attack enemy
         EnemyHit, // Mean enemy attack player
-        Cooldown
+        Cooldown,
+        Stun,
     }
 }
