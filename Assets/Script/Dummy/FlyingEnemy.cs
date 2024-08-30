@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NormalEnemy : Enemy
+public class FlyingEnemy : Enemy
 {
     [SerializeField] private Rigidbody2D enemyRD;
     [SerializeField] private GameObject player;
@@ -10,11 +10,11 @@ public class NormalEnemy : Enemy
     // Start is called before the first frame update
     void Start()
     {
-        this.enemyType = EnemyType.Normal;
+        this.enemyType = EnemyType.Flying;
         this.ATK = 5;
         this.HP = 5;
-        this.speed = 5f;
-        this.detectRange = 10f;
+        this.speed = 10f;
+        this.detectRange = 50f;
     }
 
     // Update is called once per frame
@@ -65,7 +65,7 @@ public class NormalEnemy : Enemy
     public void AttackPlayer(GameObject player)
     {
         PlayerHealth playerHealthy = player.GetComponent<PlayerHealth>();
-        if(playerHealthy.HP > 0)
+        if (playerHealthy.HP > 0)
         {
             playerHealthy.DecreaseHealth(this.ATK);
         }
