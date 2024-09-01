@@ -269,6 +269,7 @@ public class Fist : MonoBehaviour
             {
                 target.IsHitting(force);
                 enemy.TakeDamage(ATK);
+                enemy.enemyState = Enemy.EnemyState.PlayerHit;
                 isHitEnemy = true;
             }
         }

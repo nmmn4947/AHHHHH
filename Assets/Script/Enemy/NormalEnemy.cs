@@ -1,5 +1,6 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class NormalEnemy : Enemy
@@ -13,14 +14,14 @@ public class NormalEnemy : Enemy
         this.enemyType = EnemyType.Normal;
         this.ATK = 5;
         this.HP = 5;
-        this.speed = 5f;
-        this.detectRange = 10f;
+        this.speed = 2f;
+        this.detectRange = 5f;
+        this.attackRange = 1f;
     }
 
     // Update is called once per frame
     void Update()
     {
-
         if (!this.isDetect)
         {
             DetectPlayer(player);
@@ -40,10 +41,10 @@ public class NormalEnemy : Enemy
                 break;
             case EnemyState.MoveToPlayer:
                 Debug.Log("Enemy Moving to Player");
-                MoveToPlayer();
+                MoveToPlayer(this.player);
                 break;
             case EnemyState.Cooldown:
-                this.enemyState = this.ValidateEnemyInPlayerRange(this.player) ? EnemyState.EnemyHit : EnemyState.Idle;
+                this.enemyState = this.ValidatePlayerInEnemyRange(this.player) ? EnemyState.EnemyHit : EnemyState.Idle;
                 break;
             case EnemyState.EnemyHit:
                 Debug.Log("Enemy Attack");
@@ -56,10 +57,19 @@ public class NormalEnemy : Enemy
         }
     }
 
-    public void MoveToPlayer()
+    public void MoveToPlayer(GameObject player)
     {
-        // If enemy stay in player range change state enemy
-        this.enemyState = EnemyState.EnemyHit;
+        float distance = Vector2.Distance(this.transform.position, player.transform.position);
+        Debug.Log(distance);
+        if (distance > 1)
+        {
+            Vector3 direction = (player.transform.position - this.transform.position).normalized;
+            this.transform.position += this.speed * Time.deltaTime * direction;
+        }
+        else
+        {
+            this.enemyState = EnemyState.EnemyHit;
+        }
     }
 
     public void AttackPlayer(GameObject player)

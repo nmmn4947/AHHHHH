@@ -58,43 +58,33 @@ public class Enemy : MonoBehaviour
 
     public void DetectPlayer(GameObject player)
     {
-        // Find solution for detect player
-        this.isDetect = true;
-        // If detected player
-        if (this.isDetect)
+        float distance = Vector2.Distance(this.transform.position, player.transform.position);
+        Debug.Log(distance);
+        if (distance <= this.detectRange)
         {
+            this.isDetect = true;
             enemyState = EnemyState.Detected;
         }
     }
 
-    public bool ValidateEnemyInPlayerRange(GameObject player)
+    public bool ValidatePlayerInEnemyRange(GameObject player)
     {
-        return false;
-        // If enemy stay in player range change state enemy
-        //return true;
-        // If enemy not stay in player range change state enemy
-        //return false;
+        float distance = Vector2.Distance(this.transform.position, player.transform.position);
+        Debug.Log(distance);
+        if (distance > this.detectRange)
+        {
+            this.isDetect = false;
+            return false;
+        }
+        else
+        {
+            return true;
+        }
     }
 
-    public void EnemyMoveToLeft()
+    public void ContinuousAttack()
     {
-        //Move to left side + 100 unit
-        //Stay idle 10 sec
-        //Move to center
-    }
-
-    public void EnemyMoveToRight()
-    {
-        //Move to right side + 100 unit
-        //Stay idle 10 sec
-        //Move to center
-    }
-
-    public void EnemyIdle()
-    {
-        //Stay idle 10 sec
-        //Radom Left or Right first only 1 time?
-        //change state enemy
+        //
     }
 
     public enum EnemyType
