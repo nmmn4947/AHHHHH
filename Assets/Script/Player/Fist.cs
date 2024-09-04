@@ -27,6 +27,7 @@ public class Fist : MonoBehaviour
     public Phases currPhase;
     public GameObject skin;
     SpriteRenderer spriteRenderer;
+    public int ATK = 2; //Depen on volume level 
 
     [Header("ChargePhase")]
     [SerializeField] private float chargeTime;
@@ -280,7 +281,7 @@ public class Fist : MonoBehaviour
         if (collision.gameObject.tag == "Enemy")
         {
             DummyTarget target = collision.gameObject.GetComponent<DummyTarget>();
-            
+            Enemy enemy = target.GetComponent<Enemy>();
             Vector2 diff = target.gameObject.transform.position - new Vector3(KeepFistPos.x, KeepFistPos.y - 3, 0);
             float dist = Mathf.Sqrt(diff.x * diff.x + diff.y * diff.y);
             if (dist > 0.0f)
@@ -291,7 +292,8 @@ public class Fist : MonoBehaviour
             if (currPhase == Phases.hitting)
             {
                 target.IsHitting(force);
-                target.TakeDamage(1);
+                enemy.TakeDamage(ATK);
+                enemy.enemyState = Enemy.EnemyState.PlayerHit;
                 isHitEnemy = true;
             }
         }
