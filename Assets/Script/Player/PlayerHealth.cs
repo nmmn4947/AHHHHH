@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class PlayerHealth : MonoBehaviour
 {
     [SerializeField] public int HP;
-    [SerializeField] private int MAX_HP = 10;
+    [SerializeField] private int MAX_HP = 3;
     [SerializeField] private int MIN_HP = 0;
     [SerializeField] private GameObject health;
     [SerializeField] private float immortalTime;
@@ -27,7 +27,7 @@ public class PlayerHealth : MonoBehaviour
             {
                 this.HP = MAX_HP;
             }
-            //this.health.transform.GetChild(this.HP - 1).gameObject.SetActive(true);
+            this.health.transform.GetChild(this.HP - 1).gameObject.SetActive(true);
             StartCoroutine(ImmortalPlayer(immortalTime));
         }
     }
@@ -41,7 +41,7 @@ public class PlayerHealth : MonoBehaviour
             {
                 this.HP = MIN_HP;
             }
-            //this.health.transform.GetChild(this.HP).gameObject.SetActive(false);
+            this.health.transform.GetChild(this.HP).gameObject.SetActive(false);
             StartCoroutine(ImmortalPlayer(immortalTime));
         }
     }

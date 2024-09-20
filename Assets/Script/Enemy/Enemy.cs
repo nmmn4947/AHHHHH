@@ -70,7 +70,6 @@ public class Enemy : MonoBehaviour
     public bool ValidatePlayerInEnemyRange(GameObject player)
     {
         float distance = Vector2.Distance(this.transform.position, player.transform.position);
-        Debug.Log(distance);
         if (distance > this.detectRange)
         {
             this.isDetect = false;
@@ -78,13 +77,21 @@ public class Enemy : MonoBehaviour
         }
         else
         {
+            if(isCooldown)
+            {
+                return false;
+            }
             return true;
         }
     }
 
-    public void ContinuousAttack()
+    public IEnumerator CooldowingTime(float duration)
     {
-        //
+        Debug.Log("Strat Cooldown Time");
+        this.isCooldown = true;
+        //this.enemyState = EnemyState.Preparing;
+        yield return new WaitForSeconds(duration);
+        this.isCooldown = false;
     }
 
     public enum EnemyType
@@ -101,6 +108,7 @@ public class Enemy : MonoBehaviour
         Charging,
         MoveToPosition,
         MoveToPlayer,
+        Preparing, // Use for between cooldowing
         PlayerHit, // Mean player attack enemy
         EnemyHit, // Mean enemy attack player
         Cooldown,

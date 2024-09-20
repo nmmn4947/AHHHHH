@@ -12,11 +12,12 @@ public class NormalEnemy : Enemy
     void Start()
     {
         this.enemyType = EnemyType.Normal;
-        this.ATK = 5;
+        this.ATK = 1;
         this.HP = 5;
         this.speed = 2f;
         this.detectRange = 5f;
         this.attackRange = 1f;
+        this.cooldownTime = 5f;
     }
 
     // Update is called once per frame
@@ -44,7 +45,12 @@ public class NormalEnemy : Enemy
                 MoveToPlayer(this.player);
                 break;
             case EnemyState.Cooldown:
-                this.enemyState = this.ValidatePlayerInEnemyRange(this.player) ? EnemyState.EnemyHit : EnemyState.Idle;
+                Debug.Log("Enemy Cooldowing");
+                StartCoroutine(CooldowingTime(this.cooldownTime));
+                this.enemyState = EnemyState.Preparing;
+                break;
+            case EnemyState.Preparing:
+                this.enemyState = this.ValidatePlayerInEnemyRange(this.player) ? EnemyState.EnemyHit : EnemyState.Preparing;
                 break;
             case EnemyState.EnemyHit:
                 Debug.Log("Enemy Attack");
@@ -75,7 +81,7 @@ public class NormalEnemy : Enemy
     public void AttackPlayer(GameObject player)
     {
         PlayerHealth playerHealthy = player.GetComponent<PlayerHealth>();
-        if(playerHealthy.HP > 0)
+        if (playerHealthy.HP > 0)
         {
             playerHealthy.DecreaseHealth(this.ATK);
         }
