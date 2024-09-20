@@ -4,15 +4,23 @@ using UnityEngine;
 
 public class EnemySpawn : MonoBehaviour
 {
-    // Start is called before the first frame update
+    [SerializeField] private GameObject enemyPrefab;
+    public Transform[] spawnPoints;
+    public float spawnRate = 2f;
+
     void Start()
     {
-        
+        StartCoroutine(SpawnRoutine());
     }
 
-    // Update is called once per frame
-    void Update()
+    IEnumerator SpawnRoutine()
     {
-        
+        while (true)
+        {
+            int randomIndex = Random.Range(0, spawnPoints.Length);
+            Transform spawnPoint = spawnPoints[randomIndex];
+            Instantiate(enemyPrefab, spawnPoint.position,spawnPoint.rotation);
+            yield return new WaitForSeconds(spawnRate);
+        }
     }
 }
