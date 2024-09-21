@@ -11,7 +11,6 @@ public class FlyingEnemy : Enemy
     // Start is called before the first frame update
     void Start()
     {
-        this.enemyType = EnemyType.Flying;
         this.ATK = 5;
         this.HP = 5;
         this.speed = 10f;

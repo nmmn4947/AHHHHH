@@ -11,13 +11,13 @@ public class NormalEnemy : Enemy
     // Start is called before the first frame update
     void Start()
     {
-        this.enemyType = EnemyType.Normal;
         this.ATK = 1;
         this.HP = 5;
         this.speed = 2f;
         this.detectRange = 5f;
         this.attackRange = 1f;
         this.cooldownTime = 5f;
+        player = GameObject.FindGameObjectWithTag("Player");
     }
 
     // Update is called once per frame

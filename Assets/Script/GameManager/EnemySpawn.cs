@@ -7,6 +7,8 @@ public class EnemySpawn : MonoBehaviour
     [SerializeField] private GameObject enemyPrefab;
     public Transform[] spawnPoints;
     public float spawnRate = 2f;
+    private int countEnemy = 0;
+    [SerializeField] private GameObject EnemyGrouop;
 
     void Start()
     {
@@ -15,12 +17,14 @@ public class EnemySpawn : MonoBehaviour
 
     IEnumerator SpawnRoutine()
     {
-        while (true)
+        while (countEnemy < 2)
         {
+            yield return new WaitForSeconds(spawnRate);
+            countEnemy++;
             int randomIndex = Random.Range(0, spawnPoints.Length);
             Transform spawnPoint = spawnPoints[randomIndex];
-            Instantiate(enemyPrefab, spawnPoint.position,spawnPoint.rotation);
-            yield return new WaitForSeconds(spawnRate);
+            GameObject newEnemy = Instantiate(enemyPrefab, spawnPoint.position,spawnPoint.rotation);
+            newEnemy.transform.SetParent(EnemyGrouop.transform);
         }
     }
 }

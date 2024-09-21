@@ -13,7 +13,6 @@ public class BiteEnemy : Enemy
     // Start is called before the first frame update
     void Start()
     {
-        this.enemyType = EnemyType.Bite;
         this.ATK = 10;
         this.HP = 20;
         this.speed = 2f;

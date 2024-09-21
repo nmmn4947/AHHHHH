@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    public EnemyType enemyType;
     public EnemyState enemyState;
     public float speed;
     public float attackRange;
@@ -59,7 +58,6 @@ public class Enemy : MonoBehaviour
     public void DetectPlayer(GameObject player)
     {
         float distance = Vector2.Distance(this.transform.position, player.transform.position);
-        Debug.Log(distance);
         if (distance <= this.detectRange)
         {
             this.isDetect = true;

@@ -4,12 +4,5 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public void SpawnEnemies()
-    {
 
-    }
-
-    private void Update()
-    {
-    }
 }
