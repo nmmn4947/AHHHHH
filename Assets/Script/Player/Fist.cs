@@ -8,8 +8,8 @@ using static Unity.Collections.AllocatorManager;
 
 public class Fist : MonoBehaviour
 {
-    
-    public enum Phases{
+    private Transform keepFirstTrans;
+    public enum Phases {
         idle,
         //leftclick
         charging,
@@ -46,7 +46,7 @@ public class Fist : MonoBehaviour
     private float FReleaseTimeKeep;
     private float BkeepX;
     Vector2 KeepFistPos;
-    
+
 
     [Header("HittingPhase")]
     private bool isHitEnemy;
@@ -71,6 +71,7 @@ public class Fist : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        keepFirstTrans = this.transform;
         KeepFistSkinPos = skin.transform.localPosition;
         KeepFistPos = transform.localPosition;
         spriteRenderer = skin.GetComponent<SpriteRenderer>();
@@ -82,6 +83,9 @@ public class Fist : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Update Position
+        RotateToMouse();
+
         if (Input.GetKeyDown(KeyCode.E))
         {
             chargeTimeKeep = chargeTime;
@@ -91,7 +95,7 @@ public class Fist : MonoBehaviour
                 if (Input.GetMouseButtonDown(0))
                 {
                     currPhase = Phases.charging;
-                }else if (Input.GetMouseButtonDown(1))
+                } else if (Input.GetMouseButtonDown(1))
                 {
                     //currPhase = Phases.charging;
                 }
@@ -134,7 +138,7 @@ public class Fist : MonoBehaviour
                     }
                     // moreCharge = More damage, more Scale, more hitStopTime, more Range
                     // until Max
-                    shakeIntensity = Mathf.Lerp(0.0f,maxShakeIntensity, chargeTimeKeep / chargeTime);
+                    shakeIntensity = Mathf.Lerp(0.0f, maxShakeIntensity, chargeTimeKeep / chargeTime);
                 }
                 else if (Input.GetMouseButtonUp(0))
                 {
@@ -164,7 +168,7 @@ public class Fist : MonoBehaviour
                         currPhase = Phases.hitting;
                         break;
                     }
-                    currPhase = Phases.hitting; 
+                    currPhase = Phases.hitting;
                     break;
                 }
                 else
@@ -180,7 +184,7 @@ public class Fist : MonoBehaviour
                         FReleaseTimeKeep += Time.deltaTime;
                         if (FReleaseTimeKeep < forwardReleaseTime) {
                             skin.transform.localPosition = new Vector2(Mathf.Lerp(BkeepX, KeepFistSkinPos.x + forwardRate, FReleaseTimeKeep / forwardReleaseTime), KeepFistSkinPos.y);
-                            offsetC = Mathf.Lerp(0 ,forwardRate, FReleaseTimeKeep / forwardReleaseTime);
+                            offsetC = Mathf.Lerp(0, forwardRate, FReleaseTimeKeep / forwardReleaseTime);
                         }
                         else
                         {
@@ -195,7 +199,7 @@ public class Fist : MonoBehaviour
             case Phases.hitting:
                 //if hit
                 boxC.offset = new Vector2(0.6f + offsetC, boxC.offset.y);
-                if (!isHitEnemy) { 
+                if (!isHitEnemy) {
                     hitTimeKeep += Time.deltaTime;
                     if (hitTimeKeep < hitWindowTime)
                     {
@@ -245,12 +249,12 @@ public class Fist : MonoBehaviour
                 returnTimeKeep = 0.0f;
                 currPhase = Phases.idle;
                 break;
-            // -----------
-            //RIGHT CLICK
-            // -----------
-/*            case Phases.reach:
-                currPhase = Phases.idle;
-                break;*/
+                // -----------
+                //RIGHT CLICK
+                // -----------
+                /*            case Phases.reach:
+                                currPhase = Phases.idle;
+                                break;*/
         }
     }
 
@@ -301,6 +305,7 @@ public class Fist : MonoBehaviour
 
     IEnumerator hitStop(float duration)
     {
+        Debug.Log("stopping");
         Time.timeScale = 0.0f;
         Debug.Log("Shake intens = " + shakeIntensity.ToString());
         CamManager.Instance.SetShakeIntensity(shakeIntensity);
@@ -310,5 +315,20 @@ public class Fist : MonoBehaviour
         Time.timeScale = 1.0f;
     }
 
+    void RotateToMouse()
+    {
+        Vector2 direction = Camera.main.ScreenToWorldPoint(Input.mousePosition) - keepFirstTrans.position;
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+        keepFirstTrans.rotation = rotation;
+        if (rotation.z > -0.7f && rotation.z < 0.7f)
+        {
+            skin.transform.localScale = Vector3.one;
+        }
+        else
+        {
+            skin.transform.localScale = new Vector3(1, -1, 1);
+        }
+    }
 
 }

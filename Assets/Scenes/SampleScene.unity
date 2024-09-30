@@ -1415,7 +1415,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 755154581}
-  - {fileID: 838638281}
   - {fileID: 1963358197}
   - {fileID: 1230627227}
   - {fileID: 689636466}
@@ -2238,6 +2237,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currPhase: 0
   skin: {fileID: 1615019574}
+  ATK: 2
   chargeTime: 6
   MaxScaleCharge: 3
   backReleaseTime: 1
@@ -2525,6 +2525,7 @@ GameObject:
   - component: {fileID: 755154582}
   - component: {fileID: 755154583}
   - component: {fileID: 755154584}
+  - component: {fileID: 755154585}
   m_Layer: 0
   m_Name: Skin
   m_TagString: Untagged
@@ -2544,7 +2545,8 @@ Transform:
   m_LocalPosition: {x: 0.071, y: 0.096, z: 0}
   m_LocalScale: {x: 0.53154, y: 0.53154, z: 0.53154}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 838638281}
   m_Father: {fileID: 393850708}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &755154582
@@ -2630,6 +2632,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1c590172396f6b24b95c42dd36d0d919, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &755154585
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 755154580}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 500c92e88d65395488cb9c4a814e57d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &787245124
@@ -2735,11 +2749,11 @@ Transform:
   m_GameObject: {fileID: 838638280}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
-  m_LocalPosition: {x: 0.027413722, y: 0.51272726, z: 0}
-  m_LocalScale: {x: 0.7664275, y: 0.7664275, z: 0.7664275}
+  m_LocalPosition: {x: -0.082, y: 0.7839998, z: 0}
+  m_LocalScale: {x: 1.4419, y: 1.4419, z: 1.4419}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 393850708}
+  m_Father: {fileID: 755154581}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!212 &838638282
 SpriteRenderer:
