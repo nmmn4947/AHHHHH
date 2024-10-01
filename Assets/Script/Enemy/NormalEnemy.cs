@@ -17,7 +17,7 @@ public class NormalEnemy : Enemy
         this.detectRange = 5f;
         this.attackRange = 1f;
         this.cooldownTime = 5f;
-        player = GameObject.FindGameObjectWithTag("Player");
+        //player = GameObject.FindGameObjectWithTag("Player");
     }
 
     // Update is called once per frame
@@ -32,6 +32,7 @@ public class NormalEnemy : Enemy
         {
             case EnemyState.Idle:
                 Debug.Log("Enemy Idle");
+                this.isDetect = false;
                 break;
             case EnemyState.MoveToPosition:
                 Debug.Log("Enemy Moving to Position");
@@ -43,6 +44,7 @@ public class NormalEnemy : Enemy
             case EnemyState.MoveToPlayer:
                 Debug.Log("Enemy Moving to Player");
                 MoveToPlayer(this.player);
+                //this.enemyState = this.ValidatePlayerInEnemyRangeDetect(this.player) ? EnemyState.MoveToPlayer : EnemyState.Idle;
                 break;
             case EnemyState.Cooldown:
                 Debug.Log("Enemy Cooldowing");
@@ -50,7 +52,7 @@ public class NormalEnemy : Enemy
                 this.enemyState = EnemyState.Preparing;
                 break;
             case EnemyState.Preparing:
-                this.enemyState = this.ValidatePlayerInEnemyRange(this.player) ? EnemyState.EnemyHit : EnemyState.Preparing;
+                this.enemyState = this.ValidatePlayerInEnemyRangeATK(this.player) ? EnemyState.EnemyHit : EnemyState.Preparing;
                 break;
             case EnemyState.EnemyHit:
                 Debug.Log("Enemy Attack");
@@ -69,8 +71,15 @@ public class NormalEnemy : Enemy
         Debug.Log(distance);
         if (distance > 1)
         {
-            Vector3 direction = (player.transform.position - this.transform.position).normalized;
-            this.transform.position += this.speed * Time.deltaTime * direction;
+            if (distance > this.detectRange)
+            {
+                this.enemyState = EnemyState.Idle;
+            }
+            else
+            {
+                Vector3 direction = (player.transform.position - this.transform.position).normalized;
+                this.transform.position += this.speed * Time.deltaTime * direction;
+            }
         }
         else
         {

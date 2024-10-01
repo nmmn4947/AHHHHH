@@ -65,7 +65,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    public bool ValidatePlayerInEnemyRange(GameObject player)
+    public bool ValidatePlayerInEnemyRangeATK(GameObject player)
     {
         float distance = Vector2.Distance(this.transform.position, player.transform.position);
         if (distance > this.detectRange)
@@ -79,6 +79,20 @@ public class Enemy : MonoBehaviour
             {
                 return false;
             }
+            return true;
+        }
+    }
+
+    public bool ValidatePlayerInEnemyRangeDetect(GameObject player)
+    {
+        float distance = Vector2.Distance(this.transform.position, player.transform.position);
+        if (distance > this.detectRange)
+        {
+            this.isDetect = false;
+            return false;
+        }
+        else
+        {
             return true;
         }
     }
