@@ -43,7 +43,7 @@ public class FlyingEnemy : Enemy
                 MoveToPlayer();
                 break;
             case EnemyState.Cooldown:
-                this.enemyState = this.ValidatePlayerInEnemyRangeATK(this.player) ? EnemyState.EnemyHit : EnemyState.Idle;
+                this.enemyState = this.IsPlayerInRangeATK(this.player) ? EnemyState.EnemyHit : EnemyState.Idle;
                 break;
             case EnemyState.EnemyHit:
                 Debug.Log("Enemy Attack");

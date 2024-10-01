@@ -8,6 +8,9 @@ public class NormalEnemy : Enemy
     [SerializeField] private Rigidbody2D enemyRD;
     [SerializeField] private GameObject player;
 
+    public Rigidbody2D EnemyRD { get => enemyRD; set => enemyRD = value; }
+    public GameObject Player { get => player; set => player = value; }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -17,22 +20,28 @@ public class NormalEnemy : Enemy
         this.detectRange = 5f;
         this.attackRange = 1f;
         this.cooldownTime = 5f;
-        //player = GameObject.FindGameObjectWithTag("Player");
+        player = GameObject.FindGameObjectWithTag("Player");
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!this.isDetect)
+        if (!this.isCooldown)
         {
-            DetectPlayer(player);
+            if (!this.isDetect)
+            {
+                DetectPlayer(Player);
+            }
+            else
+            {
+                IsPlayerInRangeDetect(this.Player);
+            }
         }
 
         switch (this.enemyState)
         {
             case EnemyState.Idle:
                 Debug.Log("Enemy Idle");
-                this.isDetect = false;
                 break;
             case EnemyState.MoveToPosition:
                 Debug.Log("Enemy Moving to Position");
@@ -43,8 +52,7 @@ public class NormalEnemy : Enemy
                 break;
             case EnemyState.MoveToPlayer:
                 Debug.Log("Enemy Moving to Player");
-                MoveToPlayer(this.player);
-                //this.enemyState = this.ValidatePlayerInEnemyRangeDetect(this.player) ? EnemyState.MoveToPlayer : EnemyState.Idle;
+                MoveToPlayer(this.Player);
                 break;
             case EnemyState.Cooldown:
                 Debug.Log("Enemy Cooldowing");
@@ -52,11 +60,11 @@ public class NormalEnemy : Enemy
                 this.enemyState = EnemyState.Preparing;
                 break;
             case EnemyState.Preparing:
-                this.enemyState = this.ValidatePlayerInEnemyRangeATK(this.player) ? EnemyState.EnemyHit : EnemyState.Preparing;
+                this.enemyState = this.IsPlayerInRangeATK(this.Player) ? EnemyState.EnemyHit : EnemyState.Preparing;
                 break;
             case EnemyState.EnemyHit:
                 Debug.Log("Enemy Attack");
-                AttackPlayer(this.player);
+                AttackPlayer(this.Player);
                 this.enemyState = EnemyState.Cooldown;
                 break;
             case EnemyState.PlayerHit:
