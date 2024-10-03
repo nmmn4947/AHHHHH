@@ -23,9 +23,9 @@ public class NormalEnemy : Enemy
         player = GameObject.FindGameObjectWithTag("Player");
     }
 
-    // Update is called once per frame
     void Update()
     {
+        /*
         if (!this.isCooldown)
         {
             if (!this.isDetect)
@@ -37,6 +37,7 @@ public class NormalEnemy : Enemy
                 IsPlayerInRangeDetect(this.Player);
             }
         }
+        */
 
         switch (this.enemyState)
         {
@@ -56,7 +57,8 @@ public class NormalEnemy : Enemy
                 break;
             case EnemyState.Cooldown:
                 Debug.Log("Enemy Cooldowing");
-                StartCoroutine(CooldowingTime(this.cooldownTime));
+                Destroy(this.gameObject);
+                //StartCoroutine(CooldowingTime(this.cooldownTime));
                 this.enemyState = EnemyState.Preparing;
                 break;
             case EnemyState.Preparing:
@@ -79,6 +81,7 @@ public class NormalEnemy : Enemy
         Debug.Log(distance);
         if (distance > 1)
         {
+            /*
             if (distance > this.detectRange)
             {
                 this.enemyState = EnemyState.Idle;
@@ -88,6 +91,9 @@ public class NormalEnemy : Enemy
                 Vector3 direction = (player.transform.position - this.transform.position).normalized;
                 this.transform.position += this.speed * Time.deltaTime * direction;
             }
+            */
+            Vector3 direction = (player.transform.position - this.transform.position).normalized;
+            this.transform.position += this.speed * Time.deltaTime * direction;
         }
         else
         {

@@ -105,6 +105,7 @@ public class Enemy : MonoBehaviour
         //this.enemyState = EnemyState.Preparing;
         yield return new WaitForSeconds(duration);
         this.isCooldown = false;
+        Destroy(this.gameObject);
     }
 
     public enum EnemyType
